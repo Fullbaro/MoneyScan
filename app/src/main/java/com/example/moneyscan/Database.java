@@ -45,7 +45,7 @@ public class Database {
         progressDialog = new ProgressDialog(context);
 
         // Showing progress dialog at user registration time.
-        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+        progressDialog.setMessage("Kérlek várj, küldjük az adatokat a szervernek.");
         progressDialog.show();
 
 
