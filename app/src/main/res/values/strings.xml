@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MoneyScan</string>
+    <string name="start">Start</string>
+    <string name="button">Button</string>
+    <string name="start_reading" />
+    <string name="ind_t_s">Indítás</string>
+    <string name="a_sorsz_m_s_az_vsz_m_l_tsz_djon_namennyiben_nem_siker_lt_az_vsz_mot_beolvasni_ezt_k_zzel_kell_megadnod_ninternet_sz_ks_ges">A sorszám és az évszám látszódjon!\nAmennyiben nem sikerült az évszámot beolvasni, ezt kézzel kell megadnod.\nInternet szükséges!</string>
+</resources>
