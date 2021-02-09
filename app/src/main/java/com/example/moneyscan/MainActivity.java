@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     Date date = new Date();
     int ideiEv  = Integer.parseInt(DateFormat.format("yyyy", date.getTime()).toString());
 
-    String currentVersion = "1.2";
+    String currentVersion = "1.3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +88,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void textRecognizer(){
-        textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-        cameraSource = new CameraSource.Builder(getApplicationContext(), textRecognizer)
-                .setRequestedPreviewSize(1280, 1024)
-                .setAutoFocusEnabled(true)
-                .build();
+        if(textRecognizer == null) {
+            textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+            cameraSource = new CameraSource.Builder(getApplicationContext(), textRecognizer)
+                    .setRequestedPreviewSize(1280, 1024)
+                    .setAutoFocusEnabled(true)
+                    .build();
+        }
 
         surfaceView = findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
                     cameraSource.start(surfaceView.getHolder());
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resultObtained(){
-        textView = findViewById(R.id.textView);
         Log.e("Ezt találtam: ",stringResult);
 
         // A kód megtalálása
