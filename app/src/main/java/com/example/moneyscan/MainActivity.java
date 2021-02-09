@@ -157,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resultObtained(){
-        setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
         Log.e("Ezt találtam: ",stringResult);
 
@@ -200,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(vegeredmeny);
         Log.e("Ez írtam fel", vegeredmeny);
         if(vegeredmeny.length() == 15){
+            setContentView(R.layout.activity_main);
             database.send(vegeredmeny);
         }
     }
