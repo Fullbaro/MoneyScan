@@ -49,10 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
     Database database;
 
+    boolean mehet = true;
+
     Date date = new Date();
     int ideiEv  = Integer.parseInt(DateFormat.format("yyyy", date.getTime()).toString());
 
-    String currentVersion = "1.5";
+
+    String currentVersion = "1.6";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,8 +147,10 @@ public class MainActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        stringResult = stringText;
-                        resultObtained();
+                        if(mehet) {
+                            stringResult = stringText;
+                            resultObtained();
+                        }
                     }
                 });
             }
@@ -209,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public String chooseYear(){
+        mehet = false;
         final String[] re = {""};
         String[] years = {"2021", "2020", "2019", "2018", "2017", "2016", "2015", "2014"};
 
@@ -220,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 re[0] = years[which];
                 vegeredmeny += "-"+years[which];
                 show();
+                mehet = true;
             }
         });
         builder.show();
