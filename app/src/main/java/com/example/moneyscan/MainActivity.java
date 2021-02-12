@@ -49,10 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
     Database database;
 
+    boolean mehet = true;
+
     Date date = new Date();
     int ideiEv  = Integer.parseInt(DateFormat.format("yyyy", date.getTime()).toString());
 
-    String currentVersion = "1.5";
+
+    String currentVersion = "1.7";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,68 +91,71 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void textRecognizer(){
-        if(textRecognizer == null) {
-            textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-            cameraSource = new CameraSource.Builder(getApplicationContext(), textRecognizer)
-                    .setRequestedPreviewSize(1280, 1024)
-                    .setAutoFocusEnabled(true)
-                    .build();
+        if(mehet) {
+            if (textRecognizer == null) {
+                textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+                cameraSource = new CameraSource.Builder(getApplicationContext(), textRecognizer)
+                        .setRequestedPreviewSize(1280, 1024)
+                        .setAutoFocusEnabled(true)
+                        .build();
+            }
+
+            surfaceView = findViewById(R.id.surfaceView);
+            surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void surfaceCreated(SurfaceHolder holder) {
+                    try {
+                        cameraSource.start(surfaceView.getHolder());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                }
+
+                @Override
+                public void surfaceDestroyed(SurfaceHolder holder) {
+                    cameraSource.stop();
+                }
+            });
+
+
+            textRecognizer.setProcessor(new Detector.Processor<TextBlock>() {
+                @Override
+                public void release() {
+                }
+
+                @Override
+                public void receiveDetections(Detector.Detections<TextBlock> detections) {
+
+                    SparseArray<TextBlock> sparseArray = detections.getDetectedItems();
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    for (int i = 0; i < sparseArray.size(); ++i) {
+                        TextBlock textBlock = sparseArray.valueAt(i);
+                        if (textBlock != null && textBlock.getValue() != null) {
+                            stringBuilder.append(textBlock.getValue() + " ");
+                        }
+                    }
+
+                    final String stringText = stringBuilder.toString();
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                                stringResult = stringText;
+                                resultObtained();
+                        }
+                    });
+                }
+            });
         }
-
-        surfaceView = findViewById(R.id.surfaceView);
-        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                try {
-                    cameraSource.start(surfaceView.getHolder());
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
-            }
-        });
-
-
-        textRecognizer.setProcessor(new Detector.Processor<TextBlock>() {
-            @Override
-            public void release() {
-            }
-
-            @Override
-            public void receiveDetections(Detector.Detections<TextBlock> detections) {
-
-                SparseArray<TextBlock> sparseArray = detections.getDetectedItems();
-                StringBuilder stringBuilder = new StringBuilder();
-
-                for (int i = 0; i<sparseArray.size(); ++i){
-                    TextBlock textBlock = sparseArray.valueAt(i);
-                    if (textBlock != null && textBlock.getValue() !=null){
-                        stringBuilder.append(textBlock.getValue() + " ");
-                    }
-                }
-
-                final String stringText = stringBuilder.toString();
-
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        stringResult = stringText;
-                        resultObtained();
-                    }
-                });
-            }
-        });
+        mehet = false;
     }
 
     public boolean letezik(String kod){
@@ -193,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             show();
         }else {// csináld újra
             //toast("Nem találtam kódot");
+            mehet = true;
             buttonStart(surfaceView);
         }
     }
@@ -209,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public String chooseYear(){
+        mehet = false;
         final String[] re = {""};
         String[] years = {"2021", "2020", "2019", "2018", "2017", "2016", "2015", "2014"};
 
@@ -220,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 re[0] = years[which];
                 vegeredmeny += "-"+years[which];
                 show();
+                mehet = true;
             }
         });
         builder.show();
@@ -228,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonStart(View view){
+        mehet = true;
         setContentView(R.layout.surfaceview);
         textRecognizer();
     }
