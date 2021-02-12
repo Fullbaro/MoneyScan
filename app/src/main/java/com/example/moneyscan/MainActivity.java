@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        mehet = false;
     }
 
     public boolean letezik(String kod){
@@ -198,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             show();
         }else {// csináld újra
             //toast("Nem találtam kódot");
+            mehet = true;
             buttonStart(surfaceView);
         }
     }
@@ -235,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonStart(View view){
+        mehet = true;
         setContentView(R.layout.surfaceview);
         textRecognizer();
     }
