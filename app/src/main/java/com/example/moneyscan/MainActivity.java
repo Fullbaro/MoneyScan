@@ -16,6 +16,7 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
     private SurfaceView surfaceView;
+    private Button button2;
 
     private CameraSource cameraSource;
     private TextRecognizer textRecognizer;
@@ -55,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
     int ideiEv  = Integer.parseInt(DateFormat.format("yyyy", date.getTime()).toString());
 
 
-    String currentVersion = "1.7";
+    String currentVersion = "1.8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
+        button2 = findViewById(R.id.button2);
+        button2.setVisibility(View.INVISIBLE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
             ActivityCompat.requestPermissions(this, new String[]{CAMERA}, PackageManager.PERMISSION_GRANTED);
 
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
-
+                    Log.e("Info","Detection érkezett");
                     SparseArray<TextBlock> sparseArray = detections.getDetectedItems();
                     StringBuilder stringBuilder = new StringBuilder();
 
@@ -209,13 +213,15 @@ public class MainActivity extends AppCompatActivity {
         if(vegeredmeny.length() == 15){
             setContentView(R.layout.activity_main);
             textView = findViewById(R.id.textView);
-            textView.setText(vegeredmeny);
+            textView.setText(vegeredmeny.replace("-","\n"));
             database.send(vegeredmeny);
+            button2.setVisibility(View.VISIBLE);
         }
     }
 
 
     public String chooseYear(){
+        setContentView(R.layout.activity_main);
         mehet = false;
         final String[] re = {""};
         String[] years = {"2021", "2020", "2019", "2018", "2017", "2016", "2015", "2014"};
@@ -240,6 +246,25 @@ public class MainActivity extends AppCompatActivity {
         mehet = true;
         setContentView(R.layout.surfaceview);
         textRecognizer();
+    }
+
+    public void buttonCancel(View view){
+        String[] options = {"Igen", "Nem"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Biztosan visszavond?");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(options[which].equals("Igen")){
+                    database.delete(vegeredmeny);
+                    textView.setText("");
+                    button2 = findViewById(R.id.button2);
+                    button2.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        builder.show();
     }
 
     public void toast(String s){
