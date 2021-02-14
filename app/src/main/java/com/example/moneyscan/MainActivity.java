@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     int ideiEv  = Integer.parseInt(DateFormat.format("yyyy", date.getTime()).toString());
 
 
-    String currentVersion = "1.8";
+    String currentVersion = "1.9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean letezik(String kod){
         boolean re = false;
-        if(kod.startsWith("A") || kod.startsWith("B") || kod.startsWith("C") || kod.startsWith("D") || kod.startsWith("E") || kod.startsWith("F") || kod.startsWith("G") || kod.startsWith("I"))
+        if(kod.startsWith("A") || kod.startsWith("B") || kod.startsWith("C") || kod.startsWith("D") || kod.startsWith("E") || kod.startsWith("F") || kod.startsWith("G") || kod.startsWith("I")  || kod.startsWith("H"))
             re = true;
         return re;
     }

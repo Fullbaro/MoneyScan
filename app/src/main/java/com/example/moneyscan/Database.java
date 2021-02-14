@@ -47,7 +47,7 @@ public class Database {
         progressDialog = new ProgressDialog(context);
 
         // Showing progress dialog at user registration time.
-        progressDialog.setMessage("Kérlek várj, küldjük az adatokat a szervernek.");
+        progressDialog.setMessage("Kérlek várj, küldöm az adatokat a szervernek.");
         progressDialog.show();
 
 
