@@ -1,3 +1,4 @@
+
 package com.example.moneyscan;
 import android.Manifest;
 import android.annotation.SuppressLint;
