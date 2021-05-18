@@ -39,7 +39,7 @@ public class Database {
 
 
     public void send(String adat) {
-        HttpUrl = "https://fullbaro.com/moneyupload/insert_record.php";
+        HttpUrl = "https://balintdaniel.com/moneyupload/insert_record.php";
 
         // Creating Volley newRequestQueue .
         requestQueue = Volley.newRequestQueue(context);
@@ -102,7 +102,7 @@ public class Database {
     }
 
     public void delete(String adat){
-        HttpUrl = "https://fullbaro.com/moneyupload/delete_record.php";
+        HttpUrl = "https://balintdaniel.com/moneyupload/delete_record.php";
         // Creating Volley newRequestQueue .
         requestQueue = Volley.newRequestQueue(context);
 
